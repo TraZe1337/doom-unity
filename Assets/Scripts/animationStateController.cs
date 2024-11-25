@@ -12,17 +12,20 @@ public class animationStateController : MonoBehaviour
     public float maxTime = 1.0f;
     public float maxDistance = 1.0f;
     private float timer = 0.0f;
+    public bool isDead = false;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
+        playerTransform = GameObject.Find("Player").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (isDead) return;
         timer -= Time.deltaTime;
         if (timer <= 0.0f)
         {

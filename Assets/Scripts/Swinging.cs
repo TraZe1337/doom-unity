@@ -36,8 +36,8 @@ using UnityEngine;
          if (Input.GetKeyDown(swingKey)) StartSwing();
          if (Input.GetKeyUp(swingKey)) StopSwing();
 
-         CheckForSwingPoints();
-
+         if(pm.grappleGunActive) CheckForSwingPoints();
+         
          if (joint != null) OdmGearMovement();
      }
 
@@ -90,6 +90,8 @@ using UnityEngine;
 
      private void StartSwing()
      {
+         if(!pm.grappleGunActive) return;
+
          // return if predictionHit not found
          if (predictionHit.point == Vector3.zero) return;
 

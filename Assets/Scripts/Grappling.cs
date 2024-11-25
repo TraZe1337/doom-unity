@@ -48,6 +48,7 @@ public class Grappling : MonoBehaviour
 
     private void StartGrapple()
     {
+        if(!pm.grappleGunActive) return;
         if (_grapplingCdTimer > 0) return;
 
         GetComponent<SwingingDone>().StopSwing();

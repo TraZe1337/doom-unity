@@ -53,6 +53,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Camera Effects")] public PlayerCam cam;
     public float grappleFov = 75;
 
+    [Header("Guns")] 
+    public GameObject grappleGun;
+    public GameObject shootingGun;
+    public RaycastWeapon weapon;
+
+    public bool grappleGunActive = true;
+
 
     public Transform orientation;
 
@@ -126,6 +133,14 @@ public class PlayerMovement : MonoBehaviour
     {
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
+        
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            grappleGunActive = !grappleGunActive;
+            grappleGun.SetActive(grappleGunActive);
+            shootingGun.SetActive(!grappleGunActive);
+        }
 
         // when to jump
         if (Input.GetKey(jumpKey) && _readyToJump &&
@@ -152,6 +167,23 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.localScale = new Vector3(transform.localScale.x, _startYScale, transform.localScale.z);
             crouching = false;
+        }
+        
+        if (Input.GetButtonDown("Fire1") && !grappleGunActive)
+        {
+            weapon.StartFiring();
+        }
+        
+        if(weapon.isFiring && !grappleGunActive)
+        {
+            weapon.UpdateFiring(Time.deltaTime);
+        }
+        
+        weapon.UpdateBullets(Time.deltaTime);
+        
+        if(Input.GetButtonUp("Fire1") && !grappleGunActive)
+        {
+            weapon.StopFiring();
         }
     }
 
@@ -184,6 +216,7 @@ public class PlayerMovement : MonoBehaviour
         // Mode - Climbing
         else if (climbing)
         {
+            
             state = MovementState.climbing;
             _desiredMoveSpeed = climbSpeed;
         }
