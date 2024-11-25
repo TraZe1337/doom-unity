@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -27,8 +26,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (health <= 0)
         {
-            // Destroy the player
-            //Destroy(gameObject);
+            this.health = 100f;
         }
     }
 

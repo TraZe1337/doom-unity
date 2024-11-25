@@ -3472,6 +3472,7 @@ GameObject:
   - component: {fileID: 1622783694162592012}
   - component: {fileID: 8188485902629686701}
   - component: {fileID: 9113492315077582299}
+  - component: {fileID: 7278473921549613880}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -3534,6 +3535,14 @@ MonoBehaviour:
   maxTime: 1
   maxDistance: 1
   isDead: 0
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 8192
+  sightRange: 20
+  attackRange: 20
+  playerInSightRange: 0
+  playerInAttackRange: 0
+  healthBar: {fileID: 7969454342356765475}
 --- !u!195 &1622783694162592012
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3585,6 +3594,29 @@ MonoBehaviour:
   currentHealth: 0
   blinkIntensity: 4
   blinkDuration: 0.05
+--- !u!136 &7278473921549613880
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8925698561594072407}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8934894223655158495
 GameObject:
   m_ObjectHideFlags: 0

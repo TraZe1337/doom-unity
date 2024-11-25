@@ -1,50 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Ragdoll : MonoBehaviour
 {
-    Rigidbody[] rigidbodies;
-
-    private Animator animator; 
-    // Start is called before the first frame update
+    private Rigidbody[] _rigidbodies;
+    private Animator _animator; 
     void Start()
     {
-        rigidbodies = GetComponentsInChildren<Rigidbody>();
-        animator = GetComponent<Animator>();
+        _rigidbodies = GetComponentsInChildren<Rigidbody>();
+        _animator = GetComponent<Animator>();
         
         DeactivateRagdoll();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
     
-    public void DeactivateRagdoll()
+    private void DeactivateRagdoll()
     {
-        foreach (Rigidbody rb in rigidbodies)
+        foreach (Rigidbody rb in _rigidbodies)
         {
             rb.isKinematic = true;
         }
-        animator.enabled = true;
+        _animator.enabled = true;
     }
     
     public void ActivateRagdoll()
     {
-        foreach (Rigidbody rb in rigidbodies)
+        foreach (Rigidbody rb in _rigidbodies)
         {
             rb.isKinematic = false;
         }
-        animator.enabled = false;
+        _animator.enabled = false;
     }
     
-    public void applyForce(Vector3 force)
+    public void ApplyForce(Vector3 force)
     {
-        foreach (Rigidbody rb in rigidbodies)
+        foreach (Rigidbody rb in _rigidbodies)
         {
             rb.AddForce(force);
         }

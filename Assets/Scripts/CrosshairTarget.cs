@@ -1,23 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CrosshairTarget : MonoBehaviour
 {
-    Camera mainCamera;
-    private Ray ray;
-    RaycastHit hitInfo;
+    private Camera _mainCamera;
+    private Ray _ray;
+    private RaycastHit _hitInfo;
     
     void Start()
     {
-        mainCamera = Camera.main;
+        _mainCamera = Camera.main;
     }
 
     void Update()
     {
-        ray.origin = mainCamera.transform.position;
-        ray.direction = mainCamera.transform.forward;
-        Physics.Raycast(ray, out hitInfo);
-        transform.position = hitInfo.point;
+        _ray.origin = _mainCamera.transform.position;
+        _ray.direction = _mainCamera.transform.forward;
+        Physics.Raycast(_ray, out _hitInfo);
+        transform.position = _hitInfo.point;
     }
 }

@@ -11,9 +11,9 @@ using UnityEngine;
      public PlayerMovement pm;
 
      [Header("Swinging")]
-     private float maxSwingDistance = 25f;
-     private Vector3 swingPoint;
-     private SpringJoint joint;
+     private float _maxSwingDistance = 25f;
+     private Vector3 _swingPoint;
+     private SpringJoint _joint;
 
      [Header("OdmGear")]
      public Transform orientation;
@@ -23,7 +23,7 @@ using UnityEngine;
      public float extendCableSpeed;
 
      [Header("Prediction")]
-     public RaycastHit predictionHit;
+     private RaycastHit _predictionHit;
      public float predictionSphereCastRadius;
      public Transform predictionPoint;
 
@@ -35,10 +35,8 @@ using UnityEngine;
      {
          if (Input.GetKeyDown(swingKey)) StartSwing();
          if (Input.GetKeyUp(swingKey)) StopSwing();
-
          if(pm.grappleGunActive) CheckForSwingPoints();
-         
-         if (joint != null) OdmGearMovement();
+         if (_joint != null) OdmGearMovement();
      }
 
      private void LateUpdate()
@@ -48,43 +46,38 @@ using UnityEngine;
 
      private void CheckForSwingPoints()
      {
-         if (joint != null) return;
+         if (_joint != null) return;
 
          RaycastHit sphereCastHit;
          Physics.SphereCast(cam.position, predictionSphereCastRadius, cam.forward, 
-                             out sphereCastHit, maxSwingDistance, whatIsGrappleable);
+                             out sphereCastHit, _maxSwingDistance, whatIsGrappleable);
 
          RaycastHit raycastHit;
          Physics.Raycast(cam.position, cam.forward, 
-                             out raycastHit, maxSwingDistance, whatIsGrappleable);
+                             out raycastHit, _maxSwingDistance, whatIsGrappleable);
 
          Vector3 realHitPoint;
-
-         // Option 1 - Direct Hit
          if (raycastHit.point != Vector3.zero)
              realHitPoint = raycastHit.point;
-
-         // Option 2 - Indirect (predicted) Hit
+         
          else if (sphereCastHit.point != Vector3.zero)
              realHitPoint = sphereCastHit.point;
-
-         // Option 3 - Miss
+         
          else
              realHitPoint = Vector3.zero;
 
-         // realHitPoint found
          if (realHitPoint != Vector3.zero)
          {
              predictionPoint.gameObject.SetActive(true);
              predictionPoint.position = realHitPoint;
          }
-         // realHitPoint not found
+         
          else
          {
              predictionPoint.gameObject.SetActive(false);
          }
 
-         predictionHit = raycastHit.point == Vector3.zero ? sphereCastHit : raycastHit;
+         _predictionHit = raycastHit.point == Vector3.zero ? sphereCastHit : raycastHit;
      }
 
 
@@ -92,34 +85,30 @@ using UnityEngine;
      {
          if(!pm.grappleGunActive) return;
 
-         // return if predictionHit not found
-         if (predictionHit.point == Vector3.zero) return;
+         if (_predictionHit.point == Vector3.zero) return;
 
-         // deactivate active grapple
          if(GetComponent<Grappling>() != null)
              GetComponent<Grappling>().StopGrapple();
          pm.ResetRestrictions();
 
          pm.swinging = true;
 
-         swingPoint = predictionHit.point;
-         joint = player.gameObject.AddComponent<SpringJoint>();
-         joint.autoConfigureConnectedAnchor = false;
-         joint.connectedAnchor = swingPoint;
+         _swingPoint = _predictionHit.point;
+         _joint = player.gameObject.AddComponent<SpringJoint>();
+         _joint.autoConfigureConnectedAnchor = false;
+         _joint.connectedAnchor = _swingPoint;
 
-         float distanceFromPoint = Vector3.Distance(player.position, swingPoint);
+         float distanceFromPoint = Vector3.Distance(player.position, _swingPoint);
 
-         // the distance grapple will try to keep from grapple point. 
-         joint.maxDistance = distanceFromPoint * 0.8f;
-         joint.minDistance = distanceFromPoint * 0.25f;
+         _joint.maxDistance = distanceFromPoint * 0.8f;
+         _joint.minDistance = distanceFromPoint * 0.25f;
 
-         // customize values as you like
-         joint.spring = 4.5f;
-         joint.damper = 7f;
-         joint.massScale = 4.5f;
+         _joint.spring = 4.5f;
+         _joint.damper = 7f;
+         _joint.massScale = 4.5f;
 
          lr.positionCount = 2;
-         currentGrapplePosition = gunTip.position;
+         _currentGrapplePosition = gunTip.position;
      }
 
      public void StopSwing()
@@ -128,51 +117,44 @@ using UnityEngine;
 
          lr.positionCount = 0;
 
-         Destroy(joint);
+         Destroy(_joint);
      }
 
      private void OdmGearMovement()
      {
-         // right
          if (Input.GetKey(KeyCode.D)) rb.AddForce(orientation.right * horizontalThrustForce * Time.deltaTime);
-         // left
          if (Input.GetKey(KeyCode.A)) rb.AddForce(-orientation.right * horizontalThrustForce * Time.deltaTime);
-
-         // forward
          if (Input.GetKey(KeyCode.W)) rb.AddForce(orientation.forward * horizontalThrustForce * Time.deltaTime);
-
-         // shorten cable
          if (Input.GetKey(KeyCode.Space))
          {
-             Vector3 directionToPoint = swingPoint - transform.position;
+             Vector3 directionToPoint = _swingPoint - transform.position;
              rb.AddForce(directionToPoint.normalized * forwardThrustForce * Time.deltaTime);
 
-             float distanceFromPoint = Vector3.Distance(transform.position, swingPoint);
+             float distanceFromPoint = Vector3.Distance(transform.position, _swingPoint);
 
-             joint.maxDistance = distanceFromPoint * 0.8f;
-             joint.minDistance = distanceFromPoint * 0.25f;
+             _joint.maxDistance = distanceFromPoint * 0.8f;
+             _joint.minDistance = distanceFromPoint * 0.25f;
          }
-         // extend cable
+
          if (Input.GetKey(KeyCode.S))
          {
-             float extendedDistanceFromPoint = Vector3.Distance(transform.position, swingPoint) + extendCableSpeed;
+             float extendedDistanceFromPoint = Vector3.Distance(transform.position, _swingPoint) + extendCableSpeed;
 
-             joint.maxDistance = extendedDistanceFromPoint * 0.8f;
-             joint.minDistance = extendedDistanceFromPoint * 0.25f;
+             _joint.maxDistance = extendedDistanceFromPoint * 0.8f;
+             _joint.minDistance = extendedDistanceFromPoint * 0.25f;
          }
      }
 
-     private Vector3 currentGrapplePosition;
+     private Vector3 _currentGrapplePosition;
 
      private void DrawRope()
      {
-         // if not grappling, don't draw rope
-         if (!joint) return;
+         if (!_joint) return;
 
-         currentGrapplePosition = 
-             Vector3.Lerp(currentGrapplePosition, swingPoint, Time.deltaTime * 8f);
+         _currentGrapplePosition = 
+             Vector3.Lerp(_currentGrapplePosition, _swingPoint, Time.deltaTime * 8f);
 
          lr.SetPosition(0, gunTip.position);
-         lr.SetPosition(1, currentGrapplePosition);
+         lr.SetPosition(1, _currentGrapplePosition);
      }
 }

@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Grappling : MonoBehaviour
 {
     [Header("References")]
-    private PlayerMovement pm;
+    private PlayerMovement _pm;
     public Transform cam;
     public Transform gunTip;
     public LayerMask whatIsGrappleable;
@@ -29,7 +27,7 @@ public class Grappling : MonoBehaviour
 
     private void Start()
     {
-        pm = GetComponent<PlayerMovement>();
+        _pm = GetComponent<PlayerMovement>();
     }
 
     private void Update()
@@ -48,14 +46,13 @@ public class Grappling : MonoBehaviour
 
     private void StartGrapple()
     {
-        if(!pm.grappleGunActive) return;
+        if(!_pm.grappleGunActive) return;
         if (_grapplingCdTimer > 0) return;
 
         GetComponent<SwingingDone>().StopSwing();
         
         _grappling = true;
-
-       pm.freeze = true;
+       _pm.freeze = true;
 
         RaycastHit hit;
         if(Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, whatIsGrappleable))
@@ -77,7 +74,7 @@ public class Grappling : MonoBehaviour
 
     private void ExecuteGrapple()
     {
-        pm.freeze = false;
+        _pm.freeze = false;
 
         Vector3 lowestPoint = new Vector3(transform.position.x, transform.position.y - 1f, transform.position.z);
 
@@ -89,29 +86,16 @@ public class Grappling : MonoBehaviour
         Debug.Log(_grapplePoint);
         Debug.Log(highestPointOnArc);
         
-        pm.JumpToPosition(_grapplePoint, highestPointOnArc);
+        _pm.JumpToPosition(_grapplePoint, highestPointOnArc);
 
         Invoke(nameof(StopGrapple), 1f);
     }
 
     public void StopGrapple()
     {
-        pm.freeze = false;
-
+        _pm.freeze = false;
         _grappling = false;
-
         _grapplingCdTimer = grapplingCd;
-
         lr.enabled = false;
-    }
-
-    public bool IsGrappling()
-    {
-        return _grappling;
-    }
-
-    public Vector3 GetGrapplePoint()
-    {
-        return _grapplePoint;
     }
 }

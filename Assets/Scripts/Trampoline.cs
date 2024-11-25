@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Trampoline : MonoBehaviour
 {
     public float baseBounceForce = 3f;
     public float forceMultiplier = 1.3f;
-
-
+    
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))

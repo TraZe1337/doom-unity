@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Dashing : MonoBehaviour
@@ -7,8 +5,8 @@ public class Dashing : MonoBehaviour
     [Header("References")]
     public Transform orientation;
     public Transform playerCam;
-    private Rigidbody rb;
-    private PlayerMovement pm;
+    private Rigidbody _rb;
+    private PlayerMovement _pm;
 
     [Header("Dashing")]
     public float dashForce;
@@ -28,15 +26,15 @@ public class Dashing : MonoBehaviour
 
     [Header("Cooldown")]
     public float dashCd;
-    private float dashCdTimer;
+    private float _dashCdTimer;
 
     [Header("Input")]
     public KeyCode dashKey = KeyCode.E;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        pm = GetComponent<PlayerMovement>();
+        _rb = GetComponent<Rigidbody>();
+        _pm = GetComponent<PlayerMovement>();
     }
 
     private void Update()
@@ -44,34 +42,32 @@ public class Dashing : MonoBehaviour
         if (Input.GetKeyDown(dashKey))
             Dash();
 
-        if (dashCdTimer > 0)
-            dashCdTimer -= Time.deltaTime;
+        if (_dashCdTimer > 0)
+            _dashCdTimer -= Time.deltaTime;
     }
 
     private void Dash()
     {
-        if (dashCdTimer > 0) return;
-        dashCdTimer = dashCd;
+        if (_dashCdTimer > 0) return;
+        _dashCdTimer = dashCd;
 
-        pm.dashing = true;
-        pm.maxYSpeed = maxDashYSpeed;
+        _pm.dashing = true;
+        _pm.maxYSpeed = maxDashYSpeed;
 
         cam.DoFov(dashFov);
 
         Transform forwardT;
 
         if (useCameraForward)
-            forwardT = playerCam; /// where you're looking
+            forwardT = playerCam;
         else
-            forwardT = orientation; /// where you're facing (no up or down)
+            forwardT = orientation;
 
         Vector3 direction = GetDirection(forwardT);
-
         Vector3 forceToApply = direction * dashForce + orientation.up * dashUpwardForce;
-        Debug.Log(forceToApply);
 
         if (disableGravity)
-            rb.useGravity = false;
+            _rb.useGravity = false;
 
         delayedForceToApply = forceToApply;
         Invoke(nameof(DelayedDashForce), 0.025f);
@@ -83,20 +79,20 @@ public class Dashing : MonoBehaviour
     private void DelayedDashForce()
     {
         if (resetVel)
-            rb.velocity = Vector3.zero;
+            _rb.velocity = Vector3.zero;
 
-        rb.AddForce(delayedForceToApply, ForceMode.Impulse);
+        _rb.AddForce(delayedForceToApply, ForceMode.Impulse);
     }
 
     private void ResetDash()
     {
-        pm.dashing = false;
-        pm.maxYSpeed = 0;
+        _pm.dashing = false;
+        _pm.maxYSpeed = 0;
 
         cam.DoFov(60f);
 
         if (disableGravity)
-            rb.useGravity = true;
+            _rb.useGravity = true;
     }
 
     private Vector3 GetDirection(Transform forwardT)
