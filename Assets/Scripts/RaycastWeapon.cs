@@ -20,6 +20,7 @@ public class RaycastWeapon : MonoBehaviour
     public Transform raycastOrigin;
     public Transform raycastDestination;
     public TrailRenderer tracerEffect;
+    private AudioSource _shootingSound;
     
     public float damage = 10.0f;
 
@@ -29,6 +30,11 @@ public class RaycastWeapon : MonoBehaviour
     private List<Bullet> _bullets = new List<Bullet>();
     public float maxLifetime = 3.0f;
 
+
+    private void Start()
+    {
+        _shootingSound = GetComponent<AudioSource>();
+    }
     Vector3 GetPosition(Bullet bullet)
     {
         Vector3 gravity = Vector3.down * bulletDrop;
@@ -124,8 +130,8 @@ public class RaycastWeapon : MonoBehaviour
     private void FireBullet()
     {
         muzzleFlash.Emit(1);
-
         Vector3 fireDirection = (raycastDestination.position - raycastOrigin.position).normalized * bulletSpeed;
+        _shootingSound.Play();
         var bullet = CreateBullet(raycastOrigin.position, fireDirection);
         _bullets.Add(bullet);
     }

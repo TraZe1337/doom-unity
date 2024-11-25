@@ -8,7 +8,8 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy") &&
+            !collision.gameObject.GetComponentInParent<AnimationStateController>().isDead)
         {
             health -= 10f;
             OnGUI();
