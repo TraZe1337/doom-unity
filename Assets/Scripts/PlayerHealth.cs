@@ -8,10 +8,8 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("collision");
-        if (collision.gameObject.CompareTag("Projectile"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            Destroy(collision.gameObject);
             health -= 10f;
             OnGUI();
         }
@@ -26,7 +24,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (health <= 0)
         {
-            this.health = 100f;
+            health = 100f;
         }
     }
 

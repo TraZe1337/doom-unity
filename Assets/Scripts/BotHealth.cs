@@ -22,7 +22,6 @@ public class BotHealth : MonoBehaviour
         _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         _healthBar = GetComponentInChildren<UIHealthBar>();
         _animationStateController = GetComponent<AnimationStateController>();
-        Debug.Log(_healthBar);
         currentHealth = maxHealth;
 
         var rigidbodies = GetComponentsInChildren<Rigidbody>();

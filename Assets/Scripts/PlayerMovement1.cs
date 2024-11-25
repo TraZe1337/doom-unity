@@ -104,7 +104,6 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
-        Debug.Log("grounded: " + grounded);
 
         MyInput();
         SpeedControl();
@@ -148,7 +147,6 @@ public class PlayerMovement : MonoBehaviour
             Invoke(nameof(ResetJump), jumpCooldown);
         }
 
-        // start crouch
         if (Input.GetKeyDown(crouchKey) && _horizontalInput == 0 && _verticalInput == 0)
         {
             transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
@@ -257,7 +255,6 @@ public class PlayerMovement : MonoBehaviour
     private float _speedChangeFactor;
     private IEnumerator SmoothlyLerpMoveSpeed()
     {
-        // smoothly lerp movementSpeed to desired value
         float time = 0;
         float difference = Mathf.Abs(_desiredMoveSpeed - _moveSpeed);
         float startValue = _moveSpeed;

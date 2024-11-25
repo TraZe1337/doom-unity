@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 8568201147410700257}
   - component: {fileID: 2795705986882210765}
   - component: {fileID: 5781565212906243668}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -632,7 +632,7 @@ GameObject:
   - component: {fileID: 2923421260269735301}
   - component: {fileID: 6891853373889637492}
   - component: {fileID: 4201826796670111260}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Foreground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1304,7 +1304,7 @@ GameObject:
   - component: {fileID: 8394627402546090526}
   - component: {fileID: 5777330842686783906}
   - component: {fileID: 4404059269016431821}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3219,7 +3219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 122170551548495431}
   - component: {fileID: 7969454342356765475}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: UiHealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3475,7 +3475,7 @@ GameObject:
   - component: {fileID: 7278473921549613880}
   m_Layer: 0
   m_Name: AI
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3538,9 +3538,11 @@ MonoBehaviour:
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 8192
-  sightRange: 20
-  attackRange: 20
+  sightRange: 30
+  attackRange: 5
+  healthBarRange: 60
   playerInSightRange: 0
+  playerInHealthBarRange: 0
   playerInAttackRange: 0
   healthBar: {fileID: 7969454342356765475}
 --- !u!195 &1622783694162592012
@@ -3557,7 +3559,7 @@ NavMeshAgent:
   m_Acceleration: 11
   avoidancePriority: 50
   m_AngularSpeed: 720
-  m_StoppingDistance: 10
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -3589,7 +3591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f830fa998531a442f9e6b3d832e99318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1000
+  maxHealth: 500
   dieForce: 10
   currentHealth: 0
   blinkIntensity: 4

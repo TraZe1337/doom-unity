@@ -82,9 +82,6 @@ public class Grappling : MonoBehaviour
         float highestPointOnArc = grapplePointRelativeYPos + overshootYAxis;
 
         if (grapplePointRelativeYPos < 0) highestPointOnArc = overshootYAxis;
-
-        Debug.Log(_grapplePoint);
-        Debug.Log(highestPointOnArc);
         
         _pm.JumpToPosition(_grapplePoint, highestPointOnArc);
 
